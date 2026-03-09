@@ -33,7 +33,18 @@ find_package(catkin REQUIRED COMPONENTS
 )
 
 find_package(Eigen REQUIRED)
-find_package(OpenCV REQUIRED)
+# This project targets OpenCV 4.10.x.
+# Fallback to any OpenCV 4.x when the patch version is not exposed by the toolchain.
+find_package(OpenCV 4.10 QUIET)
+if(NOT OpenCV_FOUND)
+  find_package(OpenCV 4 REQUIRED)
+endif()
+
+if(OpenCV_VERSION VERSION_LESS "4.10.0")
+  message(FATAL_ERROR "OpenCV >= 4.10.0 is required, but found ${OpenCV_VERSION}")
+endif()
+
+message(STATUS "Using OpenCV version: ${OpenCV_VERSION}")
 find_package(Ceres REQUIRED)
 
 generate_messages(

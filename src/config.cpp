@@ -3,7 +3,7 @@
 //
 
 #include "config.h"
-#include <opencv2/opencv.hpp>
+#include <opencv2/core.hpp>
 
 std::string savePath = "/home/heyijia/1TDisk/calibra/";
 std::string bag_path = "2018-12-13-11-40-16.bag";
