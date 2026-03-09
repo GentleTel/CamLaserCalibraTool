@@ -33,7 +33,18 @@ find_package(catkin REQUIRED COMPONENTS
 )
 
 find_package(Eigen REQUIRED)
-find_package(OpenCV REQUIRED)
+# This project targets OpenCV 3.4.x (ROS Kinetic/Melodic common setup).
+# Fallback to any OpenCV >=3 when the patch version is not exposed by the toolchain.
+find_package(OpenCV 3.4 QUIET)
+if(NOT OpenCV_FOUND)
+  find_package(OpenCV 3 REQUIRED)
+endif()
+
+if(OpenCV_VERSION VERSION_LESS "3.4.0")
+  message(FATAL_ERROR "OpenCV >= 3.4.0 is required, but found ${OpenCV_VERSION}")
+endif()
+
+message(STATUS "Using OpenCV version: ${OpenCV_VERSION}")
 find_package(Ceres REQUIRED)
 
 generate_messages(
